@@ -42,8 +42,8 @@ int main()
     vector<Node> queuee;
     Node tmp(x,y);
     queuee.push_back(tmp);
-    level_one(n,m,mat,result,queuee,visited,prev,point,far);
-   // level_two(n,m,mat,result,queuee,visited,prev,point,far);//
+   // level_one(n,m,mat,result,queuee,visited,prev,point,far);//
+    level_two(n,m,mat,result,queuee,visited,prev,point,far);
     if( result.size()>0)
     {
         if (far==false)
@@ -69,6 +69,9 @@ int main()
             fout<<"food is too far away pacman decide to stop"<<endl;
             fout<<0;
             fout.close();
+            fout.open("map.txt");
+            fout<<0;
+            fout.close();
         }
     }
     else
@@ -76,6 +79,9 @@ int main()
         ofstream fout;
         fout.open ("output.txt");
         fout<<"can not get to food"<<endl;
+        fout<<0;
+        fout.close();
+        fout.open("map.txt");
         fout<<0;
         fout.close();
     }
