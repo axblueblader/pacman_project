@@ -31,7 +31,6 @@ public:
             x=a;
             y=b;
         }
-private:
         int x;
         int y;
 
@@ -43,4 +42,5 @@ void Vpop_front(vector<T>&a)
 }
 void Getinput (int &n,int &m,int &x, int &y, int** &mat, ifstream &fin, char*filename);
 void level_one(int n,int m, int**mat, vector<Node>&res,vector<Node>&queuee,bool** &visited, int** prev,int &point);
+void level_two(int n,int m, int**mat, vector<Node>&res,vector<Node>&queuee,bool** &visited, int** prev,int &point);
 #endif // HEADER_H_INCLUDED

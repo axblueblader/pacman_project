@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1552964704 source:d:\cs420\pac_man\main.cpp
+	"header.h"
+
+1552964222 source:d:\cs420\pac_man\pacman.cpp
+	"header.h"
+
+1552965068 d:\cs420\pac_man\header.h
+	<iostream>
+	<fstream>
+	<vector>
+	<math.h>
+	<map>
+

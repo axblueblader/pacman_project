@@ -217,20 +217,10 @@ while(step <4 && eaten==false)
         default: break;
         }
     }
-    point--;
+
 }
-for(int i=0;i<n;i++)
-{
-    for(int j=0;j<m;j++)
-        {
-            if(visited[i][j]==true)
-            {
-                cout<<prev[i][j]<<" " ;
-            }
-            else cout<<-1<<" ";
-        }
-        cout<<endl;
-}
+
+
 if (eaten==true)
 {
     xx = res[0].get_x();
@@ -263,6 +253,7 @@ if (eaten==true)
             Node tmp(tmpx,tmpy);
             res.push_back(tmp);
         }
+        point--;
     }
 }
 return;
