@@ -272,3 +272,154 @@ if (eaten==true)
 if(point<=10) far=true;
 return;
 }
+void level_two(int n,int m, int**mat, vector<Node>&res,vector<Node>&queuee,bool** &visited, int** prev,int &point, bool&far)
+{
+bool eaten=false;
+int x;
+int y;
+int x_start = queuee[0].get_x();
+int y_start = queuee[0].get_y();
+int xx,yy;
+while (queuee.size()>0 && eaten == false )
+{
+x = queuee[0].get_x();
+y = queuee[0].get_y();
+Vpop_front(queuee);
+int step=0;
+while(step <4 && eaten==false)
+    {
+        switch(step)
+        {
+        case 0:
+            {
+                if((x-1)>=0)
+                {
+                    xx=x-1;
+                if(mat[xx][y]!=1 && visited[xx][y]==false)
+                {
+                    visited[xx][y]=true;
+                    Node tmp(xx,y);
+                    if(mat[xx][y]==2)
+                    {
+                        point+=10;
+                        eaten=true;
+                        res.push_back(tmp);
+                    }
+                    queuee.push_back(tmp);
+                    prev[xx][y]=0;
+                }
+                }
+                step++;
+                break;
+            }
+        case 1:
+            {
+                if((y+1)<m)
+                {
+                    yy=y+1;
+                if(mat[x][yy]!=1 && visited[x][yy]==false && mat[x][yy]!=3)
+                {
+                    visited[x][yy]=true;
+                    Node tmp(x,yy);
+                    if(mat[x][yy]==2)
+                    {
+                        point+=10;
+                        eaten=true;
+                        res.push_back(tmp);
+                    }
+                    queuee.push_back(tmp);
+                    prev[x][yy]=1;
+                }
+                }
+                step++;
+                break;
+            }
+        case 2:
+            {
+            if((x+1)<n)
+                {
+                    xx=x+1;
+                if(mat[xx][y]!=1 && visited[xx][y]==false && mat[xx][y]!=3 )
+                {
+                    visited[xx][y]=true;
+                    Node tmp(xx,y);
+                    if(mat[xx][y]==2)
+                    {
+                        point+=10;
+                        eaten=true;
+                        res.push_back(tmp);
+                    }
+                    queuee.push_back(tmp);
+                    prev[xx][y]=2;
+                }
+                }
+                step++;
+                break;
+            }
+        case 3:
+        {
+          if((y-1)>=0)
+            {
+                yy=y-1;
+            if(mat[x][yy]!=1 && visited[x][yy]==false && mat[x][yy]!=3)
+            {
+                visited[x][yy]=true;
+                Node tmp(x,yy);
+                if(mat[x][yy]==2)
+                {
+                    point+=10;
+                    eaten=true;
+                    res.push_back(tmp);
+                }
+                queuee.push_back(tmp);
+                prev[x][yy]=3;
+            }
+            }
+            step++;
+            break;
+        }
+        default: break;
+        }
+    }
+
+}
+
+
+if (eaten==true)
+{
+    xx = res[0].get_x();
+    yy = res[0].get_y();
+    int tmpx=xx;
+    int tmpy=yy;
+    while (tmpx != x_start || tmpy != y_start )
+    {
+        if (prev[tmpx][tmpy]==0)
+        {
+            tmpx=tmpx+1;
+            Node tmp(tmpx,tmpy);
+            res.push_back(tmp);
+        }
+        else if(prev[tmpx][tmpy]==1)
+        {
+            tmpy=tmpy-1;
+            Node tmp(tmpx,tmpy);
+            res.push_back(tmp);
+        }
+        else if(prev[tmpx][tmpy]==2)
+        {
+            tmpx=tmpx-1;
+            Node tmp(tmpx,tmpy);
+            res.push_back(tmp);
+        }
+        else if(prev[tmpx][tmpy]==3)
+        {
+            tmpy=tmpy+1;
+            Node tmp(tmpx,tmpy);
+            res.push_back(tmp);
+        }
+        point--;
+    }
+}
+if(point<=10) far=true;
+return;
+}

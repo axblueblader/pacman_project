@@ -43,6 +43,7 @@ int main()
     Node tmp(x,y);
     queuee.push_back(tmp);
     level_one(n,m,mat,result,queuee,visited,prev,point,far);
+   // level_two(n,m,mat,result,queuee,visited,prev,point,far);//
     if( result.size()>0)
     {
         if (far==false)
@@ -50,7 +51,7 @@ int main()
             ofstream fout;
             fout.open("output.txt");
             {
-                fout<<result.size()<<endl;
+                fout<<result.size()-1<<endl;
                 for(int i=result.size()-1;i>=0;i--)
                 {
                     fout<<"{"<<result[i].x<<","<<result[i].y<<"} ";
@@ -70,7 +71,14 @@ int main()
             fout.close();
         }
     }
-
+    else
+    {
+        ofstream fout;
+        fout.open ("output.txt");
+        fout<<"can not get to food"<<endl;
+        fout<<0;
+        fout.close();
+    }
     for(int i = 0; i < m; ++i) {
     delete [] mat[i];
     }
