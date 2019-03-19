@@ -7,6 +7,7 @@ int main()
     char*filename="input.txt";
     int** mat;
     int m,n,x,y;
+    bool far=false;
     ifstream fin;
     Getinput(n,m,x,y,mat,fin,filename);
     bool** visited = new bool*[n];
@@ -41,14 +42,35 @@ int main()
     vector<Node> queuee;
     Node tmp(x,y);
     queuee.push_back(tmp);
-    level_one(n,m,mat,result,queuee,visited,prev,point);
-    for(int i=result.size()-1;i>=0;i--)
+    level_one(n,m,mat,result,queuee,visited,prev,point,far);
+    if( result.size()>0)
     {
-        result[i].get_coordinate();
-        cout<<", ";
+        if (far==false)
+        {
+            ofstream fout;
+            fout.open("output.txt");
+            {
+                fout<<result.size()<<endl;
+                for(int i=result.size()-1;i>=0;i--)
+                {
+                    fout<<"{"<<result[i].x<<","<<result[i].y<<"} ";
+                }
+                fout<<endl;
+                fout<<point-10;
+            }
+            fout.close();
+            map_generate(result);
+        }
+        else
+        {
+            ofstream fout;
+            fout.open("output.txt");
+            fout<<"food is too far away pacman decide to stop"<<endl;
+            fout<<0;
+            fout.close();
+        }
     }
-    cout<<endl;
-    cout<<point<<endl;
+
     for(int i = 0; i < m; ++i) {
     delete [] mat[i];
     }

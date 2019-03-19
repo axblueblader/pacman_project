@@ -1,5 +1,18 @@
 #include "header.h"
+void map_generate(vector<Node>path)
+{
+    ofstream fout;
+    fout.open("map.txt");
+    {
+        fout<<path.size()<<endl;
 
+        for(int i=path.size()-1;i>=0;i--)
+        {
+            fout<<path[i].x<<" "<<path[i].y<<endl;
+        }
+    }
+    fout.close();
+}
 void Getinput (int &n,int &m,int &x, int &y, int** &mat, ifstream &fin, char*filename)
 {
     fin.open(filename);
@@ -108,7 +121,7 @@ void Getinput (int &n,int &m,int &x, int &y, int** &mat, ifstream &fin, char*fil
         }
     }
 }
-void level_one(int n,int m, int**mat, vector<Node>&res,vector<Node>&queuee,bool** &visited, int** prev,int &point)
+void level_one(int n,int m, int**mat, vector<Node>&res,vector<Node>&queuee,bool** &visited, int** prev,int &point,bool&far)
 {
 bool eaten=false;
 int x;
@@ -227,7 +240,7 @@ if (eaten==true)
     yy = res[0].get_y();
     int tmpx=xx;
     int tmpy=yy;
-    while (tmpx != x_start || tmpy != y_start)
+    while (tmpx != x_start || tmpy != y_start )
     {
         if (prev[tmpx][tmpy]==0)
         {
@@ -256,5 +269,6 @@ if (eaten==true)
         point--;
     }
 }
+if(point<=10) far=true;
 return;
 }
