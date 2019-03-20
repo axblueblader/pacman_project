@@ -423,9 +423,10 @@ if (eaten==true)
 if(point<=10) far=true;
 return;
 }
-void level_three(int n, int m, int **mat,vector<Node>res,int x,int y )
+void level_three(int n, int m, int **mat,vector<Node>&res,int x,int y,int &point, bool &sudden, int** &maximum_step)
 {
     int mapsize=(m*n)/2;
+    srand(time(NULL));
     int random= rand() % mapsize + mapsize;
     int step=0;
     int moveable;
@@ -436,7 +437,7 @@ void level_three(int n, int m, int **mat,vector<Node>res,int x,int y )
     while(step<=random)
     {
         moveable=4;
-        if((x-1) <0 || mat[x-1][y]==1 || mat[x-1][y]==3)
+        if((x-1) <0 || mat[x-1][y]==1 || mat[x-1][y]==3 || maximum_step[x-1][y]==2)
         {
             moveable--;
         }
@@ -445,7 +446,7 @@ void level_three(int n, int m, int **mat,vector<Node>res,int x,int y )
             Node tmp((x-1),y);
             next_move.push_back(tmp);
         }
-        if((x+1)>=n || mat[x+1][y]==1 || mat[x+1][y]==3)
+        if((x+1)>=n || mat[x+1][y]==1 || mat[x+1][y]==3 || maximum_step[x+1][y]==2)
         {
             moveable--;
         }
@@ -454,13 +455,19 @@ void level_three(int n, int m, int **mat,vector<Node>res,int x,int y )
             Node tmp((x+1),y);
             next_move.push_back(tmp);
         }
-        if((y-1) <0 || mat[x][y-1]==1 || mat[x][y-1]==3) moveable--;
+        if((y-1) <0 || mat[x][y-1]==1 || mat[x][y-1]==3 || maximum_step[x][y-1]==2)
+            {
+              moveable--;
+            }
         else
         {
             Node tmp(x,(y-1));
             next_move.push_back(tmp);
         }
-        if((y+1)>=m || mat[x][y+1]==1 || mat[x][y+1]==3) moveable--;
+        if((y+1)>=m || mat[x][y+1]==1 || mat[x][y+1]==3 || maximum_step[x][y+1]==2)
+        {
+          moveable--;
+        }
         else
         {
             Node tmp(x,(y+1));
@@ -468,53 +475,80 @@ void level_three(int n, int m, int **mat,vector<Node>res,int x,int y )
         }
         if(moveable==0)
         {
-         ofstream fout;
-         fout.open("output.txt");
-         fout<<"can not move"<<endl;
-         fout<<0<<endl;
-         fout.close();
-         fout.open("map.txt");
-         fout<<0<<endl;
-         fout.close();
+            sudden=true;
+            return;
         }
-    // choose next move//
-        if(mat[x-1][y]==2 && (x-1)>=0)
+        bool moved=false;
+        while(moved!=true)
         {
+        if((x-1)>=0)
+        {
+            if (mat[x-1][y]==2)
+            {
             prevx=x;
             prevy=y;
             x=x-1;
             Node tmp(x,y);
             res.push_back(tmp);
+            mat[x][y]=0;
+            maximum_step[x][y]++;
+            point+=10;
+            moved=true;
+            break;
+            }
         }
-        else if(mat[x+1][y]==2 && (x+1)<n)
+        if(x+1<n)
         {
+            if(mat[x+1][y]==2)
+            {
             prevx=x;
             prevy=y;
             x=x+1;
             Node tmp(x,y);
             res.push_back(tmp);
+            mat[x][y]=0;
+            maximum_step[x][y]++;
+            point +=10;
+            moved=true;
+            break;
+            }
         }
-        else if(mat[x][y-1]==2 && (y-1)>=0)
+        if((y-1)>=0)
         {
+            if(mat[x][y-1]==2)
+            {
             prevx=x;
             prevy=y;
             y=y-1;
             Node tmp(x,y);
             res.push_back(tmp);
+            mat[x][y]=0;
+            maximum_step[x][y]++;
+            point+=10;
+            moved=true;
+            break;
+            }
         }
-        else if(mat[x][y+1]==2 && (y+1)<m)
+        if((y+1)<m)
         {
+            if(mat[x][y+1]==2 )
+            {
             prevx=x;
             prevy=y;
             y=y+1;
             Node tmp(x,y);
             res.push_back(tmp);
+            mat[x][y]=0;
+            maximum_step[x][y]++;
+            point+=10;
+            moved=true;
+            break;
+            }
         }
-        else
-        {
-            bool valid=false;
-            while (valid !=true)
+        bool valid=false;
+        while (valid !=true)
             {
+                srand(time(NULL));
                 random_step = rand() % moveable;
             if (next_move[random_step].x!=prevx || next_move[random_step].y!=prevy)
             {
@@ -525,6 +559,9 @@ void level_three(int n, int m, int **mat,vector<Node>res,int x,int y )
                 Node tmp(x,y);
                 res.push_back(tmp);
                 valid=true;
+                maximum_step[x][y]++;
+                point--;
+                moved=true;
             }
             else if(moveable==1)
             {
@@ -534,10 +571,16 @@ void level_three(int n, int m, int **mat,vector<Node>res,int x,int y )
                 y=next_move[random_step].y;
                 Node tmp(x,y);
                 res.push_back(tmp);
+                maximum_step[x][y]++;
                 valid=true;
+                point--;
+                moved=true;
             }
             }
         }
+
+    // choose next move//
+
         next_move.clear();
         step++;
     }

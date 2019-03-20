@@ -6,6 +6,7 @@
 #include <math.h>
 #include <map>
 #include <stdlib.h>
+#include <time.h>
 using namespace std;
 class Node
 {
@@ -44,6 +45,6 @@ void Vpop_front(vector<T>&a)
 void Getinput (int &n,int &m,int &x, int &y, int** &mat, ifstream &fin, char*filename);
 void level_one(int n,int m, int**mat, vector<Node>&res,vector<Node>&queuee,bool** &visited, int** prev,int &point, bool&far);
 void level_two(int n,int m, int**mat, vector<Node>&res,vector<Node>&queuee,bool** &visited, int** prev,int &point, bool&far);
-void level_three(int n, int m, int **mat,vector<Node>res,int x,int y );
+void level_three(int n, int m, int **mat,vector<Node>&res,int x,int y,int &point, bool &sudden, int** &maximum_step );
 void map_generate(vector<Node>path);
 #endif // HEADER_H_INCLUDED

@@ -3,6 +3,7 @@ using namespace std;
 
 int main()
 {
+    bool sudden=false;
     int point=10;
     char*filename="input.txt";
     int** mat;
@@ -16,10 +17,18 @@ int main()
     }
     fin.close();
     Getinput(n,m,x,y,mat,fin,filename);
+
     bool** visited = new bool*[n];
     for(int i=0;i<n;i++)
     {
         visited[i] = new bool [m];
+    }
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
+        {
+            visited[i][j]=false;
+        }
     }
     int **prev = new int*[n];
     /*
@@ -141,6 +150,71 @@ int main()
         fout.close();
     }
     break;
+        }
+    case 3:
+        {
+        int** maximum_step = new int*[n];
+        for(int i=0;i<n;i++)
+        {
+            maximum_step[i]= new int[m];
+        }
+        for(int i=0;i<n;i++)
+        {
+        for(int j=0;j<m;j++)
+        {
+            maximum_step[i][j]=0;
+        }
+        }
+            level_three(n,m,mat,result,x,y,point,sudden,maximum_step);
+            ofstream fout;
+            if (sudden==true)
+            {
+                fout.open("output.txt");
+                {
+                    fout<<result.size()<<endl;
+                    fout<<x<<","<<y<<" ";
+                    for(int i=0;i<result.size();i++)
+                    {
+                        fout<<result[i].x<<","<<result[i].y<<" ";
+                    }
+                    fout<<endl;
+                    fout<<point-10<<endl;
+                    fout<<"pacman is imprisoned"<<endl;
+                }
+                fout.close();
+                fout.open("map.txt");
+                {
+                    fout<<result.size()<<endl;
+                    for(int i=0;i<result.size();i++)
+                    {
+                        fout<<result[i].x<<" "<<result[i].y<<endl;
+                    }
+                }
+                fout.close();
+            }
+            else
+            {
+                fout.open("output.txt");
+                {
+                    fout<<result.size()<<endl;
+                    for(int i=0;i<result.size();i++)
+                    {
+                        fout<<result[i].x<<","<<result[i].y<<" ";
+                    }
+                    fout<<endl;
+                    fout<<point-10<<endl;
+                }
+                fout.close();
+                fout.open("map.txt");
+                {
+                    fout<<result.size()<<endl;
+                    for(int i=0;i<result.size();i++)
+                    {
+                        fout<<result[i].x<<" "<<result[i].y<<endl;
+                    }
+                }
+                fout.close();
+            }
         }
         default: break;
     }
