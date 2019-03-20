@@ -4,9 +4,9 @@ void map_generate(vector<Node>path)
     ofstream fout;
     fout.open("map.txt");
     {
-        fout<<path.size()<<endl;
+        fout<<path.size()-1<<endl;
 
-        for(int i=path.size()-1;i>=0;i--)
+        for(int i=path.size()-2;i>=0;i--)
         {
             fout<<path[i].x<<" "<<path[i].y<<endl;
         }
@@ -422,4 +422,123 @@ if (eaten==true)
 }
 if(point<=10) far=true;
 return;
+}
+void level_three(int n, int m, int **mat,vector<Node>res,int x,int y )
+{
+    int mapsize=(m*n)/2;
+    int random= rand() % mapsize + mapsize;
+    int step=0;
+    int moveable;
+    int prevx=-1;
+    int prevy=-1;
+    int random_step;
+    vector<Node> next_move;
+    while(step<=random)
+    {
+        moveable=4;
+        if((x-1) <0 || mat[x-1][y]==1 || mat[x-1][y]==3)
+        {
+            moveable--;
+        }
+        else
+        {
+            Node tmp((x-1),y);
+            next_move.push_back(tmp);
+        }
+        if((x+1)>=n || mat[x+1][y]==1 || mat[x+1][y]==3)
+        {
+            moveable--;
+        }
+        else
+        {
+            Node tmp((x+1),y);
+            next_move.push_back(tmp);
+        }
+        if((y-1) <0 || mat[x][y-1]==1 || mat[x][y-1]==3) moveable--;
+        else
+        {
+            Node tmp(x,(y-1));
+            next_move.push_back(tmp);
+        }
+        if((y+1)>=m || mat[x][y+1]==1 || mat[x][y+1]==3) moveable--;
+        else
+        {
+            Node tmp(x,(y+1));
+            next_move.push_back(tmp);
+        }
+        if(moveable==0)
+        {
+         ofstream fout;
+         fout.open("output.txt");
+         fout<<"can not move"<<endl;
+         fout<<0<<endl;
+         fout.close();
+         fout.open("map.txt");
+         fout<<0<<endl;
+         fout.close();
+        }
+    // choose next move//
+        if(mat[x-1][y]==2 && (x-1)>=0)
+        {
+            prevx=x;
+            prevy=y;
+            x=x-1;
+            Node tmp(x,y);
+            res.push_back(tmp);
+        }
+        else if(mat[x+1][y]==2 && (x+1)<n)
+        {
+            prevx=x;
+            prevy=y;
+            x=x+1;
+            Node tmp(x,y);
+            res.push_back(tmp);
+        }
+        else if(mat[x][y-1]==2 && (y-1)>=0)
+        {
+            prevx=x;
+            prevy=y;
+            y=y-1;
+            Node tmp(x,y);
+            res.push_back(tmp);
+        }
+        else if(mat[x][y+1]==2 && (y+1)<m)
+        {
+            prevx=x;
+            prevy=y;
+            y=y+1;
+            Node tmp(x,y);
+            res.push_back(tmp);
+        }
+        else
+        {
+            bool valid=false;
+            while (valid !=true)
+            {
+                random_step = rand() % moveable;
+            if (next_move[random_step].x!=prevx || next_move[random_step].y!=prevy)
+            {
+                prevx=x;
+                prevy=y;
+                x=next_move[random_step].x;
+                y=next_move[random_step].y;
+                Node tmp(x,y);
+                res.push_back(tmp);
+                valid=true;
+            }
+            else if(moveable==1)
+            {
+                prevx=x;
+                prevy=y;
+                x=next_move[random_step].x;
+                y=next_move[random_step].y;
+                Node tmp(x,y);
+                res.push_back(tmp);
+                valid=true;
+            }
+            }
+        }
+        next_move.clear();
+        step++;
+    }
 }

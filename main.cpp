@@ -6,9 +6,15 @@ int main()
     int point=10;
     char*filename="input.txt";
     int** mat;
+    int level;
     int m,n,x,y;
     bool far=false;
     ifstream fin;
+    fin.open("level.txt");
+    {
+        fin>>level;
+    }
+    fin.close();
     Getinput(n,m,x,y,mat,fin,filename);
     bool** visited = new bool*[n];
     for(int i=0;i<n;i++)
@@ -42,9 +48,12 @@ int main()
     vector<Node> queuee;
     Node tmp(x,y);
     queuee.push_back(tmp);
-   // level_one(n,m,mat,result,queuee,visited,prev,point,far);//
-    level_two(n,m,mat,result,queuee,visited,prev,point,far);
-    if( result.size()>0)
+    switch (level)
+    {
+    case 1:
+        {
+            level_one(n,m,mat,result,queuee,visited,prev,point,far);
+                if( result.size()>0)
     {
         if (far==false)
         {
@@ -85,6 +94,100 @@ int main()
         fout<<0;
         fout.close();
     }
+    break;
+        }
+    case 2:
+        {
+         level_two(n,m,mat,result,queuee,visited,prev,point,far);
+         if( result.size()>0)
+    {
+        if (far==false)
+        {
+            ofstream fout;
+            fout.open("output.txt");
+            {
+                fout<<result.size()-1<<endl;
+                for(int i=result.size()-1;i>=0;i--)
+                {
+                    fout<<"{"<<result[i].x<<","<<result[i].y<<"} ";
+                }
+                fout<<endl;
+                fout<<point-10;
+            }
+            fout.close();
+            map_generate(result);
+        }
+        else
+        {
+            ofstream fout;
+            fout.open("output.txt");
+            fout<<"food is too far away pacman decide to stop"<<endl;
+            fout<<0;
+            fout.close();
+            fout.open("map.txt");
+            fout<<0;
+            fout.close();
+        }
+    }
+    else
+    {
+        ofstream fout;
+        fout.open ("output.txt");
+        fout<<"can not get to food"<<endl;
+        fout<<0;
+        fout.close();
+        fout.open("map.txt");
+        fout<<0;
+        fout.close();
+    }
+    break;
+        }
+        default: break;
+    }
+
+
+  /*  if( result.size()>0)
+    {
+        if (far==false)
+        {
+            ofstream fout;
+            fout.open("output.txt");
+            {
+                fout<<result.size()-1<<endl;
+                for(int i=result.size()-1;i>=0;i--)
+                {
+                    fout<<"{"<<result[i].x<<","<<result[i].y<<"} ";
+                }
+                fout<<endl;
+                fout<<point-10;
+            }
+            fout.close();
+            map_generate(result);
+        }
+        else
+        {
+            ofstream fout;
+            fout.open("output.txt");
+            fout<<"food is too far away pacman decide to stop"<<endl;
+            fout<<0;
+            fout.close();
+            fout.open("map.txt");
+            fout<<0;
+            fout.close();
+        }
+    }
+    else
+    {
+        ofstream fout;
+        fout.open ("output.txt");
+        fout<<"can not get to food"<<endl;
+        fout<<0;
+        fout.close();
+        fout.open("map.txt");
+        fout<<0;
+        fout.close();
+    }
+    */
     for(int i = 0; i < m; ++i) {
     delete [] mat[i];
     }

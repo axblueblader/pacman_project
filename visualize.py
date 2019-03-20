@@ -32,7 +32,7 @@ def readFile():
   start_node['y'] = int(tmp[1])
   print(start_node)
 
-  file_path = os.path.join(script_dir, './output.txt')
+  file_path = os.path.join(script_dir, './map.txt')
   print(file_path)
   fin = open(file_path, 'r')
 
