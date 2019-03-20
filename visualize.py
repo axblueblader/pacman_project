@@ -1,5 +1,6 @@
 import os
 import click
+import time
 
 points = 0
 
@@ -31,6 +32,7 @@ def readFile():
   start_node['x'] = int(tmp[0])
   start_node['y'] = int(tmp[1])
   print(start_node)
+  fin.close()
 
   file_path = os.path.join(script_dir, './map.txt')
   print(file_path)
@@ -38,6 +40,9 @@ def readFile():
 
   moves_num = int(fin.readline())
   print(moves_num)
+  if (moves_num == 0):
+    print('No path to food or pacman chose to stand still')
+    exit()
 
   moves = []
   moves.append(start_node)
@@ -48,7 +53,7 @@ def readFile():
     tmp['y'] = int(line[1])
     moves.append(tmp)
   
-  
+  fin.close()
   print(moves)
   moves.reverse()
 
@@ -67,28 +72,55 @@ def draw(state,pacman_pos):
         print('x',end=' ')
       if (state[i][j] == 2):
         print('o',end=' ')
-      if (state[i][j] == 3):
-        print('#',end=' ')
     print('')
 
 def animate(mapp,start,moves):
   global points
+  click.clear()
+  pos = moves.pop()
+  if (mapp[pos['x']][pos['y']] == 2):
+    points = points + 10
+  print(pos)
+  print(points)
+  draw(mapp,pos)
+  points = points - 1
+
+def manual(mapp,start,moves):
   while moves:
-    click.clear()
-    pos = moves.pop()
-    if (mapp[pos['x']][pos['y']] == 2):
-      points = points + 10
-    print(pos)
-    print("points: %s" %points)
-    draw(mapp,pos)
-    points = points - 1
+    animate(mapp,start,moves)
     wait()
   print('END')
 
+def auto(mapp,start,moves):
+  while moves:
+    animate(mapp,start,moves)
+    time.sleep(1)
+  print('END')
+
+def level_menu():
+  level = -1
+  while not(1 <= level <= 3):
+    level = int(input('Choose level (1-3): '))
+
+  script_dir = os.path.dirname(__file__)
+  file_path = os.path.join(script_dir, './level.txt')
+  print(file_path)
+  with open(file_path, 'w+') as fout:
+  #fout.write(str(level))
+    print(level,file=fout)
+  #fout.close()
+  print('Wrote %s to level.txt'%level)
+
+def visualize_menu():
+  return 0
+
 def main():
+  level_menu()
   mapp,start,moves = readFile()
-  #wait()
-  animate(mapp,start,moves)
+  #visualize_menu()
+  wait()
+  #manual(mapp,start,moves)
+  #auto(mapp,start,moves)
 
 main()
 
