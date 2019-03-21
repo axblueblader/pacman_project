@@ -130,7 +130,7 @@ int main()
         {
             ofstream fout;
             fout.open("output.txt");
-            fout<<"food is too far away pacman decide to stop"<<endl;
+            fout<<"food is too far away pacman decide not to move"<<endl;
             fout<<0;
             fout.close();
             fout.open("map.txt");
@@ -179,7 +179,7 @@ int main()
                     }
                     fout<<endl;
                     fout<<point-10<<endl;
-                    fout<<"pacman is imprisoned"<<endl;
+                    fout<<"pacman out of moves"<<endl;
                 }
                 fout.close();
                 fout.open("map.txt");
@@ -214,6 +214,12 @@ int main()
                     }
                 }
                 fout.close();
+
+    for(int i=0;i<m;i++)
+    {
+        delete [] maximum_step[i];
+    }
+    delete[] maximum_step;
             }
         }
         default: break;
@@ -274,6 +280,5 @@ int main()
     delete [] visited[i];
     }
     delete [] visited;
-
 
 }

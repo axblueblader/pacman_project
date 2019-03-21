@@ -119,8 +119,8 @@ def main():
   mapp,start,moves = readFile()
   #visualize_menu()
   wait()
-  #manual(mapp,start,moves)
-  #auto(mapp,start,moves)
+  manual(mapp,start,moves)
+  auto(mapp,start,moves)
 
 main()
 

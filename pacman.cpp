@@ -16,110 +16,21 @@ void map_generate(vector<Node>path)
 void Getinput (int &n,int &m,int &x, int &y, int** &mat, ifstream &fin, char*filename)
 {
     fin.open(filename);
-    bool Mapsize=false;
-    bool input =false;
-    bool init = false;
-    char inp;
-    int conv=0;
-    // read from file//
-    while(!fin.eof())
+    fin>>n>>m;
+    mat=new int*[n];
+    for(int i=0;i<n;i++)
     {
-        // get number of node and create NxM matrix
-        if (Mapsize==false)
+        mat[i]=new int[m];
+    }
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
         {
-            int check=0;
-            int dec=0;
-
-            while (check<2)
-            {
-                fin.get(inp);
-                while(inp>= '0' && inp <='9'&& !fin.eof() )
-            {
-                conv = conv *int(pow(10,float(dec))) + (int)inp - 48 ;
-                dec++;
-                fin.get(inp);
-            }
-            if (check==0)
-            {
-                n = conv;
-                check++;
-                dec=0;
-                conv=0;
-            }
-            else if (check==1)
-            {
-                m=conv;
-                check++;
-                dec=0;
-                conv=0;
-            }
-            }
-            mat=new int*[n];
-            for (int i=0;i<n;i++)
-            {
-                mat[i]=new int [m];
-            }
-            Mapsize=true;
-            conv=0;
-            }
-        // get start, end, type of search//
-
-        // get matrix value //
-        else if (input==false)
-        {
-            int dec=0;
-            for(int i=0;i<n;i++)
-            {
-                for (int j=0;j<m;j++)
-                {
-
-                    fin.get(inp);
-                    while(inp>= '0' && inp <='9' && !fin.eof() )
-                    {
-                        conv = conv* pow(10,dec) + int(inp) - 48 ;
-                        dec++;
-                        fin.get(inp);
-                    }
-                    mat[i][j]=conv;
-
-                    conv=0;
-                    dec=0;
-                }
-
-            }
-            input=true;
-        }
-        else if (init==false)
-        {
-            int check=0;
-            int dec=0;
-            while (check<2)
-            {
-                fin.get(inp);
-                while(inp>= '0' && inp <='9' && !fin.eof() )
-                    {
-                        conv = conv* pow(10,dec) + int(inp) - 48 ;
-                        dec++;
-                        fin.get(inp);
-                    }
-                if(check==0)
-                {
-                    x = conv;
-                    conv=0;
-                    dec=0;
-                    check++;
-                }
-                else if (check==1)
-                {
-                    y = conv;
-                    conv=0;
-                    dec=0;
-                    check++;
-                }
-            }
-            init = true;
+            fin>>mat[i][j];
         }
     }
+    fin>>x>>y;
+    fin.close();
 }
 void level_one(int n,int m, int**mat, vector<Node>&res,vector<Node>&queuee,bool** &visited, int** prev,int &point,bool&far)
 {
@@ -295,7 +206,7 @@ while(step <4 && eaten==false)
                 if((x-1)>=0)
                 {
                     xx=x-1;
-                if(mat[xx][y]!=1 && visited[xx][y]==false)
+                if(mat[xx][y]!=1 && visited[xx][y]==false && mat[xx][y]!=3)
                 {
                     visited[xx][y]=true;
                     Node tmp(xx,y);

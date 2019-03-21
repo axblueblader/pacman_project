@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1553097650 source:d:\cs420\pac_man\main.cpp
+1553134998 source:d:\cs420\pac_man\main.cpp
 	"header.h"
 
-1553097650 source:d:\cs420\pac_man\pacman.cpp
+1553131938 source:d:\cs420\pac_man\pacman.cpp
 	"header.h"
 
 1553097650 d:\cs420\pac_man\header.h
