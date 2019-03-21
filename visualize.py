@@ -1,14 +1,15 @@
 import os
 import click
 import time
+import shutil
 
 points = 0
-
+script_dir = os.path.dirname(__file__)
 def wait():
     input("Press ENTER key to continue");
 
 def readFile():
-  script_dir = os.path.dirname(__file__)
+  global script_dir
   file_path = os.path.join(script_dir, './input.txt')
   print(file_path)
   fin = open(file_path, 'r')
@@ -72,6 +73,8 @@ def draw(state,pacman_pos):
         print('x',end=' ')
       if (state[i][j] == 2):
         print('o',end=' ')
+      if (state[i][j] == 3):
+        print('#',end=' ')
     print('')
 
 def animate(mapp,start,moves):
@@ -97,12 +100,22 @@ def auto(mapp,start,moves):
     time.sleep(1)
   print('END')
 
+def map_menu():
+  file_path = input('File to test (e.g: ./tests/level1/input1.txt): ')
+  assert os.path.exists(file_path), "I did not find the file at, "+str(file_path)
+  return file_path
+
+def copy_input(file_path):
+  src_path = os.path.normpath(file_path)  
+  dest_path = os.path.join(script_dir, './input.txt')  
+  shutil.copyfile(src_path,dest_path)
+
 def level_menu():
+  global script_dir
   level = -1
   while not(1 <= level <= 3):
     level = int(input('Choose level (1-3): '))
 
-  script_dir = os.path.dirname(__file__)
   file_path = os.path.join(script_dir, './level.txt')
   print(file_path)
   with open(file_path, 'w+') as fout:
@@ -112,15 +125,26 @@ def level_menu():
   print('Wrote %s to level.txt'%level)
 
 def visualize_menu():
-  return 0
+  choice = -1
+  print('')
+  while not(1 <= choice <= 2):
+    choice = int(input('Choose draw method (1-auto,2-manual):'))
+  return choice
 
 def main():
+  global script_dir
+  input_file = map_menu()
+  copy_input(input_file)
   level_menu()
+  print('Running agent')
+  bin_path = os.path.join(script_dir,'./bin/Pac_man')
+  os.system(bin_path)  
   mapp,start,moves = readFile()
-  #visualize_menu()
-  wait()
-  manual(mapp,start,moves)
-  auto(mapp,start,moves)
+  choice = visualize_menu()
+  if choice == 2:
+    manual(mapp,start,moves)
+  if choice == 1:
+    auto(mapp,start,moves)
 
 main()
 
