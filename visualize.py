@@ -107,7 +107,7 @@ def map_menu():
 
 def copy_input(file_path):
   src_path = os.path.normpath(file_path)  
-  dest_path = os.path.join(script_dir, './input.txt')  
+  dest_path = os.path.join(script_dir, 'input.txt')  
   shutil.copyfile(src_path,dest_path)
 
 def level_menu():
@@ -116,7 +116,7 @@ def level_menu():
   while not(1 <= level <= 3):
     level = int(input('Choose level (1-3): '))
 
-  file_path = os.path.join(script_dir, './level.txt')
+  file_path = os.path.join(script_dir, 'level.txt')
   print(file_path)
   with open(file_path, 'w+') as fout:
   #fout.write(str(level))
@@ -137,7 +137,9 @@ def main():
   copy_input(input_file)
   level_menu()
   print('Running agent')
-  bin_path = os.path.join(script_dir,'./bin/Pac_man')
+  bin_path = os.path.join(script_dir,'bin')
+  bin_path = os.path.join(bin_path,'Pac_man')
+  print('Bin path: %s' % bin_path)
   os.system(bin_path)  
   mapp,start,moves = readFile()
   choice = visualize_menu()
