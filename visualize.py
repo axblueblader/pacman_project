@@ -10,7 +10,7 @@ def wait():
 
 def readFile():
   global script_dir
-  file_path = os.path.join(script_dir, './input.txt')
+  file_path = os.path.join(script_dir, 'input.txt')
   print(file_path)
   fin = open(file_path, 'r')
 
@@ -35,7 +35,7 @@ def readFile():
   print(start_node)
   fin.close()
 
-  file_path = os.path.join(script_dir, './map.txt')
+  file_path = os.path.join(script_dir, 'map.txt')
   print(file_path)
   fin = open(file_path, 'r')
 
@@ -65,6 +65,8 @@ def draw(state,pacman_pos):
   for i in range(len(state)):
     for j in range(len(state[i])):
       if (pacman_pos['x'] == i and pacman_pos['y'] == j):
+        if (state[i][j] == 2):
+            state[i][j] = 0
         print('p',end=' ')
         continue
       if (state[i][j] == 0):
@@ -108,7 +110,8 @@ def map_menu():
 def copy_input(file_path):
   src_path = os.path.normpath(file_path)  
   dest_path = os.path.join(script_dir, 'input.txt')  
-  shutil.copyfile(src_path,dest_path)
+  if (src_path != dest_path):
+    shutil.copyfile(src_path,dest_path)
 
 def level_menu():
   global script_dir

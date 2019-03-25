@@ -17,6 +17,9 @@
 - We wrote our main business logic using C++ and output results to files
 - For the console driver application we used Python instead. The user will mainly interact with this program.
 
+## EXECUTION
+- Please refer to the README file to run and test correctly
+
 ## IDEAS
 
 ### Level 1
@@ -24,8 +27,15 @@
 #### Algorithm
 - Since we know everything on the map and the cost of moving is constant, we can use Breadth First Search to figure out the shortest way to reach the food.
 - However, if the food is too far away, the cost overweights the profit, we will choose to stand still and not move at all.
-#### Results
+#### Pros
+- Easy implementation
+#### Cons
+- High memory cost
 
+### Level 2
+
+#### Algorithm
+- Since the ghosts doesn't move, we treat them like normal walls and use Breadth First Search
 #### Pros
 - Easy implementation
 #### Cons
