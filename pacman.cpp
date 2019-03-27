@@ -496,3 +496,352 @@ void level_three(int n, int m, int **mat,vector<Node>&res,int x,int y,int &point
         step++;
     }
 }
+int find_true_cost(int x,int y, int n,int m, int**mat)
+{
+    bool** visited = new bool*[n];
+    for(int i=0;i<n;i++)
+    {
+        visited[i]=new bool [m];
+    }
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
+            visited[i][j]=false;
+    }
+    int**prev = new int*[n];
+    for(int i=0;i<n;i++)
+    {
+        prev[i]=new int [m];
+    }
+   bool eaten=false;
+   int x_start=x;
+   int y_start=y;
+vector<Node> res;
+vector<Node> queuee;
+Node tmp(x,y);
+queuee.push_back(tmp);
+int xx,yy;
+while (queuee.size()>0 && eaten == false )
+{
+x = queuee[0].get_x();
+y = queuee[0].get_y();
+Vpop_front(queuee);
+int step=0;
+while(step <4 && eaten==false)
+    {
+        switch(step)
+        {
+        case 0:
+            {
+                if((x-1)>=0)
+                {
+                    xx=x-1;
+                if(mat[xx][y]!=1 && visited[xx][y]==false )
+                {
+                    visited[xx][y]=true;
+                    Node tmp(xx,y);
+                    if(mat[xx][y]==2)
+                    {
+                        eaten=true;
+                        res.push_back(tmp);
+                    }
+                    queuee.push_back(tmp);
+                    prev[xx][y]=0;
+                }
+                }
+                step++;
+                break;
+            }
+        case 1:
+            {
+                if((y+1)<m)
+                {
+                    yy=y+1;
+                if(mat[x][yy]!=1 && visited[x][yy]==false)
+                {
+                    visited[x][yy]=true;
+                    Node tmp(x,yy);
+                    if(mat[x][yy]==2)
+                    {
+                        eaten=true;
+                        res.push_back(tmp);
+                    }
+                    queuee.push_back(tmp);
+                    prev[x][yy]=1;
+                }
+                }
+                step++;
+                break;
+            }
+        case 2:
+            {
+            if((x+1)<n)
+                {
+                    xx=x+1;
+                if(mat[xx][y]!=1 && visited[xx][y]==false)
+                {
+                    visited[xx][y]=true;
+                    Node tmp(xx,y);
+                    if(mat[xx][y]==2)
+                    {
+                        eaten=true;
+                        res.push_back(tmp);
+                    }
+                    queuee.push_back(tmp);
+                    prev[xx][y]=2;
+                }
+                }
+                step++;
+                break;
+            }
+        case 3:
+        {
+          if((y-1)>=0)
+            {
+                yy=y-1;
+            if(mat[x][yy]!=1 && visited[x][yy]==false)
+            {
+                visited[x][yy]=true;
+                Node tmp(x,yy);
+                if(mat[x][yy]==2)
+                {
+                    eaten=true;
+                    res.push_back(tmp);
+                }
+                queuee.push_back(tmp);
+                prev[x][yy]=3;
+            }
+            }
+            step++;
+            break;
+        }
+        default: break;
+        }
+    }
+}
+if (eaten==true)
+{
+    xx = res[0].get_x();
+    yy = res[0].get_y();
+    int tmpx=xx;
+    int tmpy=yy;
+    while (tmpx != x_start || tmpy != y_start )
+    {
+        if (prev[tmpx][tmpy]==0)
+        {
+            tmpx=tmpx+1;
+            Node tmp(tmpx,tmpy);
+            res.push_back(tmp);
+        }
+        else if(prev[tmpx][tmpy]==1)
+        {
+            tmpy=tmpy-1;
+            Node tmp(tmpx,tmpy);
+            res.push_back(tmp);
+        }
+        else if(prev[tmpx][tmpy]==2)
+        {
+            tmpx=tmpx-1;
+            Node tmp(tmpx,tmpy);
+            res.push_back(tmp);
+        }
+        else if(prev[tmpx][tmpy]==3)
+        {
+            tmpy=tmpy+1;
+            Node tmp(tmpx,tmpy);
+            res.push_back(tmp);
+        }
+
+    }
+    for(int i = 0; i < m; ++i) {
+    delete [] prev[i];
+    }
+    delete [] prev;
+    for(int i = 0; i < m; ++i) {
+    delete [] visited[i];
+    }
+    delete [] visited;
+    return res.size()-1;
+}
+else
+{
+     for(int i = 0; i < m; ++i) {
+    delete [] prev[i];
+    }
+    delete [] prev;
+    for(int i = 0; i < m; ++i) {
+    delete [] visited[i];
+    }
+    delete [] visited;
+    return n*m;
+
+}
+
+}
+
+void level_four(int**mat, int px, int py, int gx, int gy,int n,int m, vector<Node>&path,int &point,bool&eatenbyghost,int**maximum_step)
+{
+    int prevx,prevy;
+    int distance;
+    int tmp;
+    int step;
+    vector<int>true_cost;
+    int num_food=0;
+    for(int i=0;i<n;i++)
+    {
+        for (int j=0;j<m;j++)
+        {
+            if(mat[i][j]==2) num_food++;
+        }
+    }
+while (((px!=gx)||(py!=gy))&&num_food!=0&&eatenbyghost==false)
+{
+    prevx=px;
+    prevy=py;
+    if((px-1)>=0)
+    {
+        if(mat[px-1][py]!=1 && mat[px-1][py]!=3)
+        {
+            distance=abs(px-1-gx)+abs(py-gy);
+            if(distance<=2 || maximum_step[px-1][py]==2) tmp=n*m;
+            else tmp=find_true_cost(px-1,py,n,m,mat);
+            true_cost.push_back(tmp);
+        }
+        else
+    {
+        tmp=n*m;
+        true_cost.push_back(tmp);
+    }
+    }
+    else
+    {
+        tmp=n*m;
+        true_cost.push_back(tmp);
+    }
+    if((px+1)<n)
+    {
+        if(mat [px+1][py]!=1 && mat[px+1][py]!=3)
+        {
+            distance=abs(px+1-gx)+abs(py-gy);
+            if(distance<=2 || maximum_step[px+1][py]==2) tmp=n*m;
+            else tmp=find_true_cost(px+1,py,n,m,mat);
+            true_cost.push_back(tmp);
+        }
+        else
+    {
+        tmp=n*m;
+        true_cost.push_back(tmp);
+    }
+    }
+    else
+    {
+        tmp=n*m;
+        true_cost.push_back(tmp);
+    }
+    if((py-1)>=0)
+    {
+        if(mat[px][py-1]!=1 && mat[px][py-1]!=3)
+        {
+            distance=abs(px-gx)+abs(py-1-gy);
+            if(distance<=2 || maximum_step[px][py-1]==2) tmp=n*m;
+            else tmp=find_true_cost(px,py-1,n,m,mat);
+            true_cost.push_back(tmp);
+        }
+        else
+    {
+        tmp=n*m;
+        true_cost.push_back(tmp);
+    }
+    }
+    else
+    {
+        tmp=n*m;
+        true_cost.push_back(tmp);
+    }
+    if((py+1)<m)
+    {
+        if(mat[px][py+1]!=1 && mat[px][py+1]!=3)
+        {
+            distance=abs(px-gx)+abs(py+1-gy);
+            if(distance<=2 || maximum_step[px][py+1]==2) tmp=n*m;
+            else tmp=find_true_cost(px,py+1,n,m,mat);
+            true_cost.push_back(tmp);
+        }
+        else
+    {
+        tmp=n*m;
+        true_cost.push_back(tmp);
+    }
+    }
+    else
+    {
+        tmp=n*m;
+        true_cost.push_back(tmp);
+    }
+    step=Min_true_cost(true_cost);
+    if(step!=-1)
+    {
+        if(true_cost[step]!=(n*m))
+        {
+            if(step==0)
+        {
+            px=px-1;
+            Node tmp(px,py);
+            maximum_step[px][py]++;
+            path.push_back(tmp);
+            point--;
+        }
+        if(step==1)
+        {
+            px=px+1;
+            Node tmp(px,py);
+            maximum_step[px][py]++;
+            path.push_back(tmp);
+            point--;
+        }
+        if(step==2)
+        {
+            py=py-1;
+            Node tmp(px,py);
+            maximum_step[px][py]++;
+            path.push_back(tmp);
+            point--;
+        }
+        if(step==3)
+        {
+            py=py+1;
+            Node tmp(px,py);
+            maximum_step[px][py]++;
+            path.push_back(tmp);
+            point--;
+        }
+        }
+        else eatenbyghost=true;
+
+    }
+    if(mat[px][py]==2)
+    {
+        point+=10;
+        num_food--;
+        mat[px][py]=0;
+    }
+    ghost_agent(gx,gy,mat,px,py,n,m);
+    true_cost.clear();
+}
+if((px==gx)&& (py==gy)) eatenbyghost=true;
+}
+int Min_true_cost(vector<int> a)
+{
+    if (a.size()==0) return -1;
+    int j=0;
+    int min_cost=a[0];
+    for(int i=1;i<a.size();i++)
+    {
+        if (a[i]<min_cost)
+        {
+            min_cost=a[i];
+            j=i;
+        }
+    }
+    return j;
+}

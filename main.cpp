@@ -9,6 +9,7 @@ int main()
     int** mat;
     int level;
     int m,n,x,y;
+    int gx,gy;
     bool far=false;
     ifstream fin;
     fin.open("level.txt");
@@ -222,7 +223,56 @@ int main()
     delete[] maximum_step;
             }
         }
-        default: break;
+    case 4:
+        {
+            int** maximum_step = new int*[n];
+        for(int i=0;i<n;i++)
+        {
+            maximum_step[i]= new int[m];
+        }
+        for(int i=0;i<n;i++)
+        {
+        for(int j=0;j<m;j++)
+        {
+            maximum_step[i][j]=0;
+        }
+        }
+            for(int i=0;i<n;i++)
+            {
+                for(int j=0;j<n;j++)
+                {
+                    if(mat[i][j]==3)
+                    {
+                        gx=i;
+                        gy=j;
+                    }
+                }
+            }
+            bool eatenbyghost=false;
+            level_four(mat,x,y,gx,gy,n,m,result,point,eatenbyghost,maximum_step);
+            ofstream fout;
+            if(eatenbyghost==true);
+            {
+                fout.open("output.txt");
+                fout<<"ghost eat pacman"<<endl;
+                fout<<point-10<<endl;
+                fout.close();
+            }
+            fout.open("map.txt");
+            fout<<result.size()<<endl;
+            for(int i=0;i<result.size();i++)
+            {
+                fout<<result[i].x<<" "<<result[i].y<<endl;
+            }
+            fout.close();
+             for(int i=0;i<m;i++)
+    {
+        delete [] maximum_step[i];
+    }
+    delete[] maximum_step;
+                break;
+        }
+    default: break;
     }
 
 

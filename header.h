@@ -46,5 +46,10 @@ void Getinput (int &n,int &m,int &x, int &y, int** &mat, ifstream &fin, char*fil
 void level_one(int n,int m, int**mat, vector<Node>&res,vector<Node>&queuee,bool** &visited, int** prev,int &point, bool&far);
 void level_two(int n,int m, int**mat, vector<Node>&res,vector<Node>&queuee,bool** &visited, int** prev,int &point, bool&far);
 void level_three(int n, int m, int **mat,vector<Node>&res,int x,int y,int &point, bool &sudden, int** &maximum_step );
+void level_four(int**mat, int px, int py, int gx, int gy,int n,int m, vector<Node>&path,int&point,bool&eatenbyghost,int**maximum_step);
 void map_generate(vector<Node>path);
+int Min_true_cost(vector<int>a);
+void ghost_agent(int&gx,int&gy,int**mat, int px,int py,int n,int m);
+void getdistance(int gx,int gy,int px, int py,int&difx, int&dify,int n,int m);
+int find_true_cost(int x,int y, int n,int m, int**mat);
 #endif // HEADER_H_INCLUDED
