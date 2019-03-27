@@ -29,6 +29,8 @@
 - However, if the food is too far away, the cost overweights the profit, we will choose to stand still and not move at all.
 #### Pros
 - Easy implementation
+- Deterministic
+- Solution is optimal
 #### Cons
 - High memory cost
 
@@ -38,5 +40,20 @@
 - Since the ghosts doesn't move, we treat them like normal walls and use Breadth First Search
 #### Pros
 - Easy implementation
+- Deterministic
+- Solution is optimal
 #### Cons
 - High memory cost
+
+### Level 3
+
+#### Algorithm
+ 
+#### Pros
+- Easy implementation
+- Performs better when foods are gathered nearby.
+- Faster then brute-forcing through every possible steps.
+#### Cons
+- Stochastic: We don't have any kind of prediction so it really depends on luck to get the highest score.
+- May miss out in the case of "gold mines" (many foods next to each other but they are placed extremely far away).
+- Run time depends on the randomed number of steps. 

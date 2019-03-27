@@ -2,6 +2,7 @@ import os
 import click
 import time
 import shutil
+import copy
 
 points = 0
 script_dir = os.path.dirname(__file__)
@@ -67,16 +68,16 @@ def draw(state,pacman_pos):
       if (pacman_pos['x'] == i and pacman_pos['y'] == j):
         if (state[i][j] == 2):
             state[i][j] = 0
-        print('p',end=' ')
+        print('@',end=' ')
         continue
       if (state[i][j] == 0):
         print('.',end=' ')
       if (state[i][j] == 1):
-        print('x',end=' ')
+        print('X',end=' ')
       if (state[i][j] == 2):
         print('o',end=' ')
       if (state[i][j] == 3):
-        print('#',end=' ')
+        print('%',end=' ')
     print('')
 
 def animate(mapp,start,moves):
@@ -99,8 +100,9 @@ def manual(mapp,start,moves):
 def auto(mapp,start,moves):
   while moves:
     animate(mapp,start,moves)
-    time.sleep(1)
+    time.sleep(0.5)
   print('END')
+  time.sleep(0.6)
 
 def map_menu():
   file_path = input('File to test (e.g: ./tests/level1/input1.txt): ')
@@ -144,12 +146,17 @@ def main():
   bin_path = os.path.join(bin_path,'Pac_man')
   print('Bin path: %s' % bin_path)
   os.system(bin_path)  
+  print('Waiting for result')
   mapp,start,moves = readFile()
   choice = visualize_menu()
   if choice == 2:
     manual(mapp,start,moves)
   if choice == 1:
-    auto(mapp,start,moves)
+    while(True):
+      tmp_mapp = copy.deepcopy(mapp)
+      tmp_start = copy.deepcopy(start)
+      tmp_moves = copy.deepcopy(moves)
+      auto(tmp_mapp,tmp_start,tmp_moves)
 
 main()
 

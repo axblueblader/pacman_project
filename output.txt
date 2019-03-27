@@ -1,2 +1,2 @@
 ghost eat pacman
--8
+90
