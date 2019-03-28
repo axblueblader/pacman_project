@@ -118,8 +118,8 @@ def copy_input(file_path):
 def level_menu():
   global script_dir
   level = -1
-  while not(1 <= level <= 3):
-    level = int(input('Choose level (1-3): '))
+  while not(1 <= level <= 4):
+    level = int(input('Choose level (1-4): '))
 
   file_path = os.path.join(script_dir, 'level.txt')
   print(file_path)
